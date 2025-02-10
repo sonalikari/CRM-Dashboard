@@ -91,4 +91,4 @@ CLOUDINARY_API_SECRET=
 npm start
 ```
 
-### Deployed Link: 
+### Deployed Link: https://crm-dashboard-1.onrender.com/
