@@ -30,18 +30,17 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, lead }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return alert("Both fields are required!");
-
-    const leadData: Lead = {
-      _id: lead?._id, // Use correct ID key for editing
-      name,
-      phone,
-    };
+    if (!name || !phone) {
+      alert("Both fields are required!");
+      return;
+    }
 
     if (lead && lead._id) {
-      editLead(leadData); 
+      // Editing an existing lead (must include _id)
+      editLead({ _id: lead._id, name, phone });
     } else {
-      addLead(leadData);
+      // Adding a new lead (exclude _id)
+      addLead({ name, phone });
     }
 
     onClose();

@@ -14,7 +14,7 @@ interface Property {
 }
 
 const PropertyList = () => {
-  const { properties, setProperties, deleteProperty } = useProperties();
+  const { properties,  deleteProperty } = useProperties();
   const [search, setSearch] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,8 +1,17 @@
 import { useState, useEffect } from "react";
 import { useProperties } from "../../context/PropertiesContext";
 
+interface Property {
+  _id?: string; // Ensure it matches backend ID format
+  type: string;
+  size: string;
+  location: string;
+  budget: string;
+  availability: boolean;
+}
+
 interface PropertyFormModalProps {
-  selectedProperty: any | null;
+  selectedProperty: Property | null;
   setIsModalOpen: (isOpen: boolean) => void;
 }
 
@@ -11,7 +20,7 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
   setIsModalOpen,
 }) => {
   const { addProperty, updateProperty, refreshProperties } = useProperties();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Omit<Property, "_id">>({
     type: "Residential",
     size: "",
     location: "",
@@ -21,16 +30,32 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
 
   useEffect(() => {
     if (selectedProperty) {
-      setFormData(selectedProperty);
+      setFormData({
+        type: selectedProperty.type,
+        size: selectedProperty.size,
+        location: selectedProperty.location,
+        budget: selectedProperty.budget,
+        availability: selectedProperty.availability,
+      });
+    } else {
+      setFormData({
+        type: "Residential",
+        size: "",
+        location: "",
+        budget: "",
+        availability: true,
+      });
     }
   }, [selectedProperty]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedProperty) {
-      updateProperty({ ...formData, id: selectedProperty.id });
+    if (selectedProperty && selectedProperty._id) {
+      // Update existing property
+      updateProperty({ ...formData, _id: selectedProperty._id });
     } else {
-      addProperty({ ...formData, id: Date.now() });
+      // Add new property (without _id)
+      addProperty({ ...formData });
     }
     refreshProperties();
     setIsModalOpen(false);
@@ -84,7 +109,6 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
             }
           />
 
-          {/* Availability Dropdown */}
           <label className="block font-medium text-gray-700">
             Availability:
           </label>
