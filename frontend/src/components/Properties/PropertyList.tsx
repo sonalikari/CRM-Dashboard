@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { AiFillEdit, AiFillDelete, AiOutlineSearch } from "react-icons/ai";
 import { useProperties } from "../../context/PropertiesContext";
-import PropertyFormModal from "./PropertyForm";
 
 interface Property {
   _id: string;
