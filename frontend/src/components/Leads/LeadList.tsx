@@ -21,7 +21,8 @@ interface LeadListProps {
   onEdit: (lead: Lead | null) => void;
 }
 
-const API_BASE_URL = "http://localhost:5000/api/leads";
+// const API_BASE_URL = "http://localhost:5000/api/leads";
+const API_BASE_URL = "https://crm-dashboard-mopd.onrender.com/api/leads"
 
 const LeadList: React.FC<LeadListProps> = ({ onEdit }) => {
   const { leads, deleteLead, fetchLeads } = useLeads();

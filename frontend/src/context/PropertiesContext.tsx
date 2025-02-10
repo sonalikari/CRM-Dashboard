@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
-const API_URL = "http://localhost:5000/api/properties";
+// const API_URL = "http://localhost:5000/api/properties";
+const API_URL = "https://crm-dashboard-mopd.onrender.com/api/properties";
 
 interface Property {
   _id: string;
