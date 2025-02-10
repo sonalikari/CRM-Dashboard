@@ -6,7 +6,7 @@ interface Property {
   type: string;
   size: string;
   location: string;
-  budget: string;
+  budget: number;
   availability: boolean;
 }
 
@@ -24,7 +24,7 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
     type: "Residential",
     size: "",
     location: "",
-    budget: "",
+    budget: 0,
     availability: true,
   });
 
@@ -42,7 +42,7 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
         type: "Residential",
         size: "",
         location: "",
-        budget: "",
+        budget: 0,
         availability: true,
       });
     }
@@ -105,7 +105,7 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
             className="w-full p-2 border rounded"
             value={formData.budget}
             onChange={(e) =>
-              setFormData({ ...formData, budget: e.target.value })
+              setFormData({ ...formData, budget: Number(e.target.value) })
             }
           />
 

@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { useLeads } from "../../context/LeadsContext";
 
 interface Lead {
-  _id?: string; 
+  _id: string;
   name: string;
   phone: string;
+  documents?: string[]; 
 }
 
 interface LeadFormProps {
@@ -34,17 +35,17 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, lead }) => {
       alert("Both fields are required!");
       return;
     }
-
+  
     if (lead && lead._id) {
-      // Editing an existing lead (must include _id)
-      editLead({ _id: lead._id, name, phone });
+      editLead({ _id: lead._id, name, phone, documents: lead.documents ?? [] });
     } else {
-      // Adding a new lead (exclude _id)
-      addLead({ name, phone });
+      addLead({ name, phone, documents: [] }); // Add default empty array
     }
-
+  
     onClose();
   };
+  
+  
 
   return isOpen ? (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 p-4">

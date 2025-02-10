@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { AiFillEdit, AiFillDelete, AiOutlineSearch } from "react-icons/ai";
 import { useProperties } from "../../context/PropertiesContext";
 import PropertyFormModal from "./PropertyForm";
@@ -14,7 +13,7 @@ interface Property {
 }
 
 const PropertyList = () => {
-  const { properties,  deleteProperty } = useProperties();
+  const { properties,  deleteProperty, refreshProperties } = useProperties();
   const [search, setSearch] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,19 +21,11 @@ const PropertyList = () => {
     null
   );
 
+
   useEffect(() => {
-    const fetchProperties = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/properties`
-        );
-        setProperties(response.data);
-      } catch (error) {
-        console.error("Error fetching properties:", error);
-      }
-    };
-    fetchProperties();
-  }, [setProperties]);
+    refreshProperties();
+  }, [refreshProperties]);
+  
 
   const handleEdit = (property: Property) => {
     setSelectedProperty(property);
