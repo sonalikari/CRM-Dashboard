@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { useLeads } from "../../context/LeadsContext";
 
+// Define Lead type inside the component file
 interface Lead {
   _id: string;
   name: string;
   phone: string;
-  documents?: string[]; 
+  documents?: string[];
 }
 
 interface LeadFormProps {
@@ -37,14 +38,15 @@ const LeadForm: React.FC<LeadFormProps> = ({ isOpen, onClose, lead }) => {
     }
   
     if (lead && lead._id) {
+      // Editing an existing lead (keep `_id`)
       editLead({ _id: lead._id, name, phone, documents: lead.documents ?? [] });
     } else {
-      addLead({ name, phone, documents: [] }); // Add default empty array
+      // Adding a new lead (no `_id`)
+      addLead({ name, phone, documents: [] }); 
     }
   
     onClose();
   };
-  
   
 
   return isOpen ? (

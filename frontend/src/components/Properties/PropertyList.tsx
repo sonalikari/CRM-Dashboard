@@ -12,30 +12,25 @@ interface Property {
   availability: boolean;
 }
 
-const PropertyList = () => {
-  const { properties,  deleteProperty, refreshProperties } = useProperties();
+interface PropertyListProps {
+  setSelectedProperty: (property: Property | null) => void; // Add this
+}
+
+const PropertyList: React.FC<PropertyListProps> = ({ setSelectedProperty }) => {
+  const { properties, deleteProperty, refreshProperties } = useProperties();
   const [search, setSearch] = useState("");
   const [availabilityFilter, setAvailabilityFilter] = useState("all");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
-    null
-  );
-
 
   useEffect(() => {
     refreshProperties();
   }, [refreshProperties]);
-  
 
   const handleEdit = (property: Property) => {
     setSelectedProperty(property);
-    setIsModalOpen(true);
   };
 
   const handleDelete = async (id: string) => {
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete this property?"
-    );
+    const isConfirmed = window.confirm("Are you sure you want to delete this property?");
     if (!isConfirmed) return;
 
     try {
@@ -46,18 +41,17 @@ const PropertyList = () => {
   };
 
   const filteredProperties = properties.filter((property) => {
-    const matchesSearch = property.location
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const matchesSearch = property.location.toLowerCase().includes(search.toLowerCase());
     const matchesAvailability =
-      availabilityFilter === "all" ||
-      property.availability.toString() === availabilityFilter;
+      availabilityFilter === "all" || String(property.availability) === availabilityFilter;
     return matchesSearch && matchesAvailability;
   });
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg">
+      {/* Search & Filter */}
       <div className="flex justify-between items-center mb-4">
+        {/* Search */}
         <div className="relative">
           <AiOutlineSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg" />
           <input
@@ -69,10 +63,9 @@ const PropertyList = () => {
           />
         </div>
 
+        {/* Availability Filter */}
         <div>
-          <label className="text-gray-700 font-medium mr-2">
-            Filter by Availability:
-          </label>
+          <label className="text-gray-700 font-medium mr-2">Filter by Availability:</label>
           <select
             className="p-2 border rounded"
             value={availabilityFilter}
@@ -85,6 +78,7 @@ const PropertyList = () => {
         </div>
       </div>
 
+      {/* Properties Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border rounded-lg shadow-lg">
           <thead className="bg-blue-500 text-white">
@@ -102,22 +96,20 @@ const PropertyList = () => {
               filteredProperties.map((property, index) => (
                 <tr
                   key={property._id}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-gray-100" : "bg-white"
-                  } hover:bg-gray-200 transition`}
+                  className={`border-b ${index % 2 === 0 ? "bg-gray-100" : "bg-white"} hover:bg-gray-200 transition`}
                 >
                   <td className="py-3 px-6">{property.type}</td>
                   <td className="py-3 px-6">{property.size}</td>
                   <td className="py-3 px-6">{property.location}</td>
                   <td className="py-3 px-6">${property.budget}</td>
                   <td className="py-3 px-6 text-center">
-                    <button
+                    <span
                       className={`px-4 py-1 rounded-full text-white ${
                         property.availability ? "bg-green-500" : "bg-red-500"
                       }`}
                     >
                       {property.availability ? "Yes" : "No"}
-                    </button>
+                    </span>
                   </td>
                   <td className="py-3 px-6 flex justify-center space-x-3">
                     <AiFillEdit
@@ -141,13 +133,6 @@ const PropertyList = () => {
           </tbody>
         </table>
       </div>
-
-      {isModalOpen && (
-        <PropertyFormModal
-          selectedProperty={selectedProperty}
-          setIsModalOpen={setIsModalOpen}
-        />
-      )}
     </div>
   );
 };

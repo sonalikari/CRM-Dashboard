@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useProperties } from "../../context/PropertiesContext";
 
 interface Property {
-  _id?: string; // Ensure it matches backend ID format
+  _id?: string;
   type: string;
   size: string;
   location: string;
@@ -51,10 +51,8 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedProperty && selectedProperty._id) {
-      // Update existing property
       updateProperty({ ...formData, _id: selectedProperty._id });
     } else {
-      // Add new property (without _id)
       addProperty({ ...formData });
     }
     refreshProperties();
@@ -68,9 +66,7 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
           {selectedProperty ? "Edit Property" : "Add Property"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <label className="block font-medium text-gray-700">
-            Property Type:
-          </label>
+          <label className="block font-medium text-gray-700">Property Type:</label>
           <select
             className="w-full p-2 border rounded"
             value={formData.type}
@@ -94,9 +90,7 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
             placeholder="Location"
             className="w-full p-2 border rounded"
             value={formData.location}
-            onChange={(e) =>
-              setFormData({ ...formData, location: e.target.value })
-            }
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
           />
 
           <input
@@ -104,23 +98,14 @@ const PropertyFormModal: React.FC<PropertyFormModalProps> = ({
             placeholder="Budget"
             className="w-full p-2 border rounded"
             value={formData.budget}
-            onChange={(e) =>
-              setFormData({ ...formData, budget: Number(e.target.value) })
-            }
+            onChange={(e) => setFormData({ ...formData, budget: Number(e.target.value) })}
           />
 
-          <label className="block font-medium text-gray-700">
-            Availability:
-          </label>
+          <label className="block font-medium text-gray-700">Availability:</label>
           <select
             className="w-full p-2 border rounded"
             value={formData.availability.toString()}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                availability: e.target.value === "true",
-              })
-            }
+            onChange={(e) => setFormData({ ...formData, availability: e.target.value === "true" })}
           >
             <option value="true">Yes</option>
             <option value="false">No</option>

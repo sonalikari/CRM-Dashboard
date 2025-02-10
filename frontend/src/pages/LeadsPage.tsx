@@ -2,6 +2,13 @@ import { useState } from "react";
 import LeadList from "../components/Leads/LeadList";
 import LeadForm from "../components/Leads/LeadForm";
 
+interface Lead {   
+  _id: string;
+  name: string;
+  phone: string;
+  documents?: string[];
+}
+
 const LeadsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
